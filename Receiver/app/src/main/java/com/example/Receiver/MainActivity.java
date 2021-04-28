@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
@@ -72,6 +73,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //        初始化保存文件子线程
         initFileThread();
 
+//        检查当前是否是销毁重建的
+        if(savedInstanceState != null){
+            retrieveFragment();
+        }
+
 //        开始点击 一下接收文件按钮
         receive_file_tab.performClick();
     }
@@ -86,6 +92,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         action_bar = getSupportActionBar();
     }
 
+
+//    当activity异常销毁重建时调用
+//    用于重新获得 activity 之前的 两个fragment
+    private void retrieveFragment(){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        rffg = (ReceiveFileFragment)fragmentManager.findFragmentByTag("rffg");
+        mffg = (MyFilesFragment)fragmentManager.findFragmentByTag("mffg");
+    }
 
 //    获得写文件权限
     private void getPermission(){
@@ -140,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             if(rffg == null){
                 rffg = new ReceiveFileFragment();
-                transaction.add(R.id.frame_layout, rffg);
+                transaction.add(R.id.frame_layout, rffg, "rffg");
             }else{
                 transaction.show(rffg);
             }
@@ -156,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Bundle bundle = new Bundle();
                 bundle.putString("app_download_directory", app_download_directory);
                 mffg.setArguments(bundle);
-                transaction.add(R.id.frame_layout, mffg);
+                transaction.add(R.id.frame_layout, mffg, "mffg");
             }else {
                 transaction.show(mffg);
             }
