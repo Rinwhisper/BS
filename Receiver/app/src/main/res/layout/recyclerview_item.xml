@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/item_container">
+
+    <TextView
+        android:id="@+id/filename"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mft_item_height"
+        android:layout_marginStart="@dimen/mft_item_margin_left"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/mft_item_text_size"
+        android:textStyle="normal"
+        android:textColor="@color/black"/>
+</LinearLayout>

@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">基于屏幕二维码的单向文件传输系统</string>
+    <string name="receive_file_tab_text">接收文件</string>
+    <string name="my_files_tab_text">我的文件</string>
+    <string name="rft_receive_success_text">扫码完成，请扫描下一张</string>
+    <string name="rft_prompt_text">提示：请不要中断扫码，直到发送端和接收端提示传输完成</string>
+    <string name="rft_start_button_text">开始扫码</string>
+    <string name="rft_dialog_default_text">默认</string>
+    <string name="rft_dialog_prompt_title_text">提示</string>
+    <string name="rft_dialog_error_title_text">错误</string>
+    <string name="rft_dialog_error_id_message_text">id错误，当前期望的id为：%d，扫码获得的id为：%d，请重新扫码</string>
+    <string name="rft_dialog_error_length_message_text">length错误，请重新扫码</string>
+    <string name="rft_dialog_error_CRC32_message_text">CRC32校验错误，请重新扫码</string>
+    <string name="rft_dialog_error_mismatched_flag_id_text">当前flag和id不匹配</string>
+    <string name="rft_dialog_error_magic_number_message_text">二维码不能被应用解析，请扫描正确的二维码</string>
+    <string name="rft_dialog_error_md5_text">发生了未知的错误，md5校验未通过，请尝试重新传输文件</string>
+    <string name="rft_dialog_start_dialog_message_text">请不要中断扫码，直到发送端和接收端提示完成</string>
+    <string name="rft_dialog_cancel_text">取消</string>
+    <string name="rft_dialog_start_scan_text">开始扫码</string>
+    <string name="rft_dialog_OK_text">确定</string>
+    <string name="rft_dialog_next_text">点击扫描下一张</string>
+    <string name="rft_dialog_next_button_text">扫描下一张</string>
+    <string name="rft_dialog_cancel_message_text">是否退出文件传输，如果退出，那么所有已传输的数据都将丢弃</string>
+    <string name="rft_dialog_continue_text">继续传输</string>
+    <string name="rft_dialog_confirm_stop_text">确定退出</string>
+    <string name="rft_dialog_receive_success_text">文件传输完成</string>
+</resources>

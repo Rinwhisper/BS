@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="divider_line_height">1px</dimen>
+    <dimen name="bottom_navigation_bar_height">50dp</dimen>
+    <dimen name="rft_tip_horizontal_padding">10dp</dimen>
+    <dimen name="rft_divider_view_height">50dp</dimen>
+    <dimen name="mft_item_height">40dp</dimen>
+    <dimen name="mft_item_margin_left">10dp</dimen>
+    <dimen name="mft_item_text_size">15sp</dimen>
+</resources>

@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name = "基于屏幕二维码的单向文件传输系统"

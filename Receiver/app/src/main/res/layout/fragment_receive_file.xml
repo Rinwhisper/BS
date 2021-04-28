@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/rft_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/rft_tip_horizontal_padding"
+        android:text="@string/rft_prompt_text"
+        android:layout_above="@id/rft_divider_view"/>
+
+    <View
+        android:id="@+id/rft_divider_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/rft_divider_view_height"
+        android:layout_centerInParent="true"/>
+
+    <Button
+        android:id="@+id/rft_start_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/rft_start_button_text"
+        android:layout_below="@id/rft_divider_view"
+        android:layout_centerHorizontal="true"/>
+</RelativeLayout>
