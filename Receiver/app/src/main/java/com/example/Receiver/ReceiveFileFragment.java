@@ -189,7 +189,7 @@ public class ReceiveFileFragment extends Fragment implements View.OnClickListene
                                         R.string.rft_dialog_next_button_text);
 //                                scan();
                             }else{
-//                                flag == FLAG_FILENAME 时 id 必须为 1
+//                                flag == FLAG_FILENAME 时 id 必须为 0
 //                                这也意味着 FLAG_FILENAME 应该是第一个packet
                                 showDialog(R.string.rft_dialog_error_title_text,
                                         R.string.rft_dialog_error_mismatched_flag_id_text,
