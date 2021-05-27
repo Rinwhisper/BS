@@ -118,12 +118,15 @@ class GUI:
         # md5对象，用于计算整个文件的md5
         self.md5 = hashlib.md5()
 
+        self.canvas_size = 600
 
         self.setTitle()
-        self.setSize(500, 400)
         
-        self.fullScreen()
+        self.root.resizable(False, False)
+
+        # self.fullScreen()
         self.createFirstFrame()
+        self.setFirstFrameSize()
 
         # 启动 处理数据 的生产者线程
         threading.Thread(target = self.produceDataThread).start()
@@ -135,9 +138,17 @@ class GUI:
     def setTitle(self, message: str = "基于屏幕二维码的单向文件传输系统"):
         self.root.title(message)
 
-    def setSize(self, length: int, wid_th: int):
-        self.root.geometry(str(length) + "x" + str(wid_th))
+    def setSize(self, length: int, width: int):
+        self.root.geometry(str(length) + "x" + str(width))
     
+    def setFirstFrameSize(self, length = 500, width = 400):
+        self.root.attributes('-fullscreen', False)
+        self.setSize(length, width)
+
+    def setSecondFrameSize(self, length = 790, width = 400):
+        self.root.attributes('-fullscreen', False)
+        self.setSize(length, width)
+
     def mainloop(self):
         self.root.mainloop()
 
@@ -154,12 +165,14 @@ class GUI:
         self.recoverSecondFrame(filepath)
         
     def secondFrameBackToFirstFrame(self):
+        self.setFirstFrameSize()
         self.hideSecondFrame()
         self.recoverFirstFrame()
         
     def secondFrameToThirdFrame(self):
         filepath = self.label_s_2.cget("text")
 
+        self.fullScreen()
 
         # 首先清除 两个 queue
         self.clearQueue(self.raw_data_queue)
@@ -174,6 +187,7 @@ class GUI:
     def thirdFrameToFirstFrame(self):
         self.hideThirdFrame()
         self.recoverFirstFrame()
+        self.setFirstFrameSize()
 
 
     # 关闭窗口时停止 filethread 线程
@@ -321,15 +335,14 @@ class GUI:
 
     def createSecondFrame(self, filepath: str):
         self.second_frame = tk.Frame(self.root)
-        self.label_s_1 = ttk.Label(self.second_frame, text = "您选择的文件为：")
-        self.label_s_2 = tk.Label(self.second_frame, text = filepath, width = 40, wraplength = 200,
-                                    font = tf.Font( size=10, weight=tf.BOLD))
+        self.label_s_1 = ttk.Label(self.second_frame, text = "您选择的文件为：", font = tf.Font(size=15, weight=tf.BOLD))
+        self.label_s_2 = ttk.Label(self.second_frame, text = filepath, width = 50, wraplength = 300, font = tf.Font(size=11))
         self.button_s_1 = ttk.Button(self.second_frame, text = "重新选择文件", command = self.secondFrameBackToFirstFrame)
         self.button_s_2 = ttk.Button(self.second_frame, text = "开始文件传输", command = self.secondFrameToThirdFrame)
-        self.label_s_1.grid(row = 0, column = 1, pady = 10, sticky = tk.W)
+        self.label_s_1.grid(row = 0, column = 1, pady = 20, sticky = tk.W)
         self.label_s_2.grid(row = 1, column = 1, pady = 10, ipadx = 0)
-        self.button_s_1.grid(row = 2, column = 0, pady = 80, padx = 22)
-        self.button_s_2.grid(row = 2, column = 2, pady = 80)
+        self.button_s_1.grid(row = 2, column = 0, pady = 80, padx = 71)
+        self.button_s_2.grid(row = 2, column = 2, pady = 80, padx=0, ipadx=0)
         self.second_frame.grid()
 
     def hideSecondFrame(self):
@@ -343,13 +356,14 @@ class GUI:
         else:
             # second_frame 不存在，也就是说 second_frame 从来没被创建过，直接创建
             self.createSecondFrame(filepath)
+        self.setSecondFrameSize()
         
             
     def createThirdFrame(self):
         self.third_frame = tk.Frame(self.root)
-        self.label_t_1 = ttk.Label(self.third_frame, text = "当前 ID：")
-        self.label_t_2 = ttk.Label(self.third_frame)
-        self.canvas = tk.Canvas(self.third_frame, width = 500, height = 500, bg = "white")
+        self.label_t_1 = ttk.Label(self.third_frame, text = "当前 ID：", font = tf.Font(size=15, weight=tf.BOLD))
+        self.label_t_2 = ttk.Label(self.third_frame, font = tf.Font(size=15))
+        self.canvas = tk.Canvas(self.third_frame, width = self.canvas_size, height = self.canvas_size, bg = "white")
         # self.button_t_1 = ttk.Button(self.third_frame, text = "上一张", command = self.nextQRCode)
         self.button_t_2 = ttk.Button(self.third_frame, text = "下一张", command = self.nextQRCode)
         self.button_t_3 = ttk.Button(self.third_frame, text = "刷新", command = self.flushCurrentQRCode)
@@ -384,6 +398,7 @@ class GUI:
         else:
             # third_frame 不存在，创建
             self.createThirdFrame()
+        self.fullScreen()
         self.nextQRCode()
 
 
@@ -398,7 +413,8 @@ class GUI:
             pass
 
     def fullScreen(self):
-        self.setSize(self.root.winfo_screenwidth(), self.root.winfo_screenheight())
+        # self.setSize(self.root.winfo_screenwidth(), self.root.winfo_screenheight())
+        self.root.attributes('-fullscreen', True)
 
     # 中途退出传输文件
     def stopSend(self):
@@ -420,8 +436,8 @@ class GUI:
 
     def flushCurrentQRCode(self):
         new = Protocol.produce(self.current_raw_image_obj["flag"], self.current_raw_image_obj["id"], self.current_raw_image_obj["data"])
-        self.image = ImageTk.PhotoImage(image = self.resize(new, (500, 500)))
-        self.canvas.create_image(250, 250, image = self.image, anchor = "center")
+        self.image = ImageTk.PhotoImage(image = self.resize(new, (self.canvas_size, self.canvas_size)))
+        self.canvas.create_image(self.canvas_size / 2, self.canvas_size / 2, image = self.image, anchor = "center")
 
 
     def nextQRCode(self):
@@ -433,7 +449,7 @@ class GUI:
 
         if self.current_image_obj == GUI.DATA_FINISH:
             self.image = None
-            self.canvas.create_text(250, 250, text = "传输完毕，请点击 完成 按钮返回")
+            self.canvas.create_text(self.canvas_size / 2, self.canvas_size / 2, text = "传输完毕，请点击 完成 按钮返回")
             # 隐藏下一张，刷新，终止传输按钮
             self.button_t_2.pack_forget()
             self.button_t_3.pack_forget()
@@ -445,8 +461,8 @@ class GUI:
         else:
             # 保持引用
             self.label_t_2.configure(text = self.current_image_obj["id"])
-            self.image = ImageTk.PhotoImage(image = self.resize(self.current_image_obj["data"] , (500, 500)))
-            self.canvas.create_image(250, 250, image = self.image, anchor = "center")
+            self.image = ImageTk.PhotoImage(image = self.resize(self.current_image_obj["data"] , (self.canvas_size, self.canvas_size)))
+            self.canvas.create_image(self.canvas_size / 2, self.canvas_size / 2, image = self.image, anchor = "center")
 
     def resize(self, image, size):
         return image.resize(size, Image.ANTIALIAS)
